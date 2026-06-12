@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="res_config_settings_view_form_multi_currency_pos" model="ir.ui.view">
+        <field name="name">res_config_settings_view_form_multi_currency_pos </field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_iface_big_scrollbars']/.." position="after">
+                <setting>
+                    <field name="remove_payment_lines_modifying_order"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_payment_method_view_form_inherit" model="ir.ui.view">
+        <field name="name">pos.payment.method.form.inherit</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <field name="receivable_account_id" position="before">
+                <field name="enable_discount" widget="boolean_toggle"/>
+                <div colspan="2">
+                    <group invisible="enable_discount == False">
+                        <field name="discount_type"/>
+                        <field name="adjustment_product_id"/>
+                        <field name="rate_discount"/>
+                        <field name="round_payment_amount"/>
+                        <field name="apply_discount_on_lines" widget="boolean_toggle"/>
+                        <field name="apply_discount_to_total_order" widget="boolean_toggle"/>
+                        <field name="apply_total_discount_with_differences_less_than"/>
+                    </group>
+                </div>
+            </field>
+        </field>
+    </record>
+
+</odoo>

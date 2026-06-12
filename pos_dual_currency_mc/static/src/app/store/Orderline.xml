@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="OrderlinePDCMC" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ul//li[contains(@class, 'price-per-unit')]" position="replace">
+            <li class="price-per-unit d-flex justify-content-between bd-highlight mb-0">
+                <span class="qty px-1 text-bg-view me-1">
+                    <span class ="fw-bolder" t-esc="line.qty + ' '"/><t t-if="line.unit and line.unit !== 'Units'" t-esc="line.unit" />
+                    <t t-if="!props.basic_receipt">
+                        x
+                        <t t-if="line.price !== 0">
+                            <s t-esc="line.oldUnitPrice" t-if="line.oldUnitPrice" />
+                            <t t-esc="line.unitPrice + ' ≈ ' + line.unitPrice_foreign" />
+                        </t>
+                        /
+                    </t>
+                    <t t-if="line.unit" t-esc="line.unit" />
+                </span>
+                <span class="fw-bolder text-end bd-highlight"><t t-esc="line.price_foreign" /></span>
+            </li>
+        </xpath>
+    </t>
+
+ </templates>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="PaymentScreenDuePDCMC" t-inherit="point_of_sale.PaymentScreenDue" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[contains(@t-esc, 'this.env.utils.formatCurrency(currentOrder.getTotalDue())')]" position="after">
+            <t t-esc="' ≈ ' + this.env.utils.formatCurrencyForeign(currentOrder.getTotalDueForeign(), currentOrder.taxTotals.show_currency_id)" />
+        </xpath>
+    </t>
+    
+    <t t-name="PaymentScreenPaymentLinesPDCMC" t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[contains(@t-att-class, 'selectedLineClass(line)')]//div[contains(@class, 'payment-infos')]" position="replace">
+            <div class="row payment-infos d-flex align-items-center justify-content-between flex-grow-1 px-3 py-3 text-truncate cursor-pointer fs-2" t-on-click="() => this.selectLine(line)">
+                <div class="col-12 d-flex align-items-center justify-content-between">
+                    <span class="payment-name"><t t-esc="line.payment_method_id.name"/></span>
+                    <div class="payment-amount px-3">
+                        <t t-esc="env.utils.formatCurrency(line.get_amount())" />
+                        <t t-if="line.payment_method_id.enable_currencies">
+                            <t t-esc="' ≈ ' + env.utils.formatCurrencyForeign(line.get_amount_foreign(), line.get_payment_method_currency_id())" />
+                        </t>
+                    </div>
+                </div>
+                <t t-if="line.payment_method_id.enable_payment_lot or line.payment_method_id.enable_payment_reference or line.payment_method_id.enable_payment_terminal">
+                    <div class="col-12 d-flex align-items-center justify-content-between">
+                        <span t-if="line.payment_method_id.enable_payment_lot" class="fw-bold payment-name" t-on-click="() => this.setPaymentInfo(line, 'payment_lot')">
+                            <t t-esc="'Lote: '"/>
+                            <span class="fw-normal payment-name"><t t-esc="line.payment_lot"/></span>
+                        </span>
+                        <span t-if="line.payment_method_id.enable_payment_reference" class="fw-bold payment-name" t-on-click="() => this.setPaymentInfo(line, 'payment_reference')">
+                            <t t-esc="'Ref: '"/>
+                            <span class="fw-normal payment-name"><t t-esc="line.payment_reference"/></span>
+                        </span>
+                        <span t-if="line.payment_method_id.enable_payment_terminal" class="fw-bold payment-name" t-on-click="() => this.setPaymentInfo(line, 'payment_terminal')">
+                            <t t-esc="'Term: '"/>
+                            <span class="fw-normal payment-name"><t t-esc="line.payment_terminal"/></span>
+                        </span>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@t-att-class, 'unselectedLineClass(line)')]//div[contains(@class, 'payment-infos')]" position="replace">
+            <div class="row payment-infos d-flex align-items-center justify-content-between flex-grow-1 px-3 py-3 text-truncate cursor-pointer fs-2" t-on-click="() => this.selectLine(line)">
+                <div class="col-12 d-flex align-items-center justify-content-between">
+                    <span class="payment-name"><t t-esc="line.payment_method_id.name"/></span>
+                    <div class="payment-amount px-3">
+                        <t t-esc="env.utils.formatCurrency(line.get_amount())" />
+                        <t t-if="line.payment_method_id.enable_currencies">
+                            <t t-esc="' ≈ ' + env.utils.formatCurrencyForeign(line.get_amount_foreign(), line.get_payment_method_currency_id())" />
+                        </t>
+                    </div>
+                </div>
+                <t t-if="line.payment_method_id.enable_payment_lot or line.payment_method_id.enable_payment_reference or line.payment_method_id.enable_payment_terminal">
+                    <div class="col-12 d-flex align-items-center justify-content-between">
+                        <span t-if="line.payment_method_id.enable_payment_lot" class="fw-bold payment-name" t-on-click="() => this.setPaymentInfo(line, 'payment_lot')">
+                            <t t-esc="'Lote: '"/>
+                            <span class="fw-normal payment-name"><t t-esc="line.payment_lot"/></span>
+                        </span>
+                        <span t-if="line.payment_method_id.enable_payment_reference" class="fw-bold payment-name" t-on-click="() => this.setPaymentInfo(line, 'payment_reference')">
+                            <t t-esc="'Ref: '"/>
+                            <span class="fw-normal payment-name"><t t-esc="line.payment_reference"/></span>
+                        </span>
+                        <span t-if="line.payment_method_id.enable_payment_terminal" class="fw-bold payment-name" t-on-click="() => this.setPaymentInfo(line, 'payment_terminal')">
+                            <t t-esc="'Term: '"/>
+                            <span class="fw-normal payment-name"><t t-esc="line.payment_terminal"/></span>
+                        </span>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </t>
+
+ </templates>

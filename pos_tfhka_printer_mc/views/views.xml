@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="res_config_settings_view_form_multi_currency_pos" model="ir.ui.view">
+        <field name="name">res_config_settings_view_form_multi_currency_pos </field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_iface_big_scrollbars']/../.." position="after">
+                <block id="tfhka_res_config" title="Impresora Fiscal TFHKA">
+                    <setting>
+                        <field name="is_tax_box" widget="boolean_toggle"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="demo_printer_tfhka"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="version_tfhka"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="url_access_base"/>
+                        <div class="row">
+                            <label for="url_access" class="col-lg-3"/>
+                            <field name="url_access" readonly="True"/>
+                        </div>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="printer_tfhka_flag_21"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="user_access_base"/>
+                        <div class="row">
+                            <label for="user_access" class="col-lg-3"/>
+                            <field name="user_access" readonly="True"/>
+                        </div>
+                    </setting>
+                     <setting invisible="is_tax_box == False">
+                        <field name="time_printer_tfhka_doc"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="password_access_base"/>
+                        <div class="row">
+                            <label for="password_access" class="col-lg-3"/>
+                            <field name="password_access" readonly="True"/>
+                        </div>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="time_printer_tfhka_rep_z"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="calculate_product_price_tfhka"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="block_new_order_if_not_been_issued_invoice"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="printing_invoice_automatic"/>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="add_additional_information_header"/>
+                        <div class="row" invisible="add_additional_information_header == False">
+                            <label for="additional_information_header" class="col-lg-3"/>
+                            <field name="additional_information_header"/>
+                        </div>
+                    </setting>
+                    <setting invisible="is_tax_box == False">
+                        <field name="add_additional_information_footer"/>
+                        <div class="row" invisible="add_additional_information_footer == False">
+                            <label for="additional_information_footer" class="col-lg-3"/>
+                            <field name="additional_information_footer"/>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_payment_method_view_form_tfhka" model="ir.ui.view">
+        <field name="name">pos_payment_method_view_form_inherit_tfhka</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <field name="journal_id" position="before">
+                <field name="code_in_printer_tfhka"/>
+            </field>
+        </field>
+    </record>
+        
+    <record id="product_template_form_view_tfhka" model="ir.ui.view">
+		<field name="name">product_template_form_view_tfhka</field>
+		<field name="model">product.template</field>
+		<field name="inherit_id" ref="point_of_sale.product_template_form_view"/>
+		<field name="arch" type="xml">
+            <field name="to_weight" position="before">
+                <field name="ignore_send_fiscal_printer"/>
+            </field>
+		</field>
+	</record>
+
+    <record id="view_pos_order_tree_tfhka" model="ir.ui.view">
+		<field name="name">view_pos_order_tree_tfhka</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="after">
+				<field name="type_document_printer"/>
+                <field name="printer_serial" string="Impresora"/>
+                <field name="fiscal_invoice_number"/>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="view_pos_pos_form_tfhka" model="ir.ui.view">
+		<field name="name">view_pos_pos_form_tfhka</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+		<field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="printer_serial" readonly="True"/>
+                <field name="fiscal_invoice_number" readonly="True"/>
+            </xpath>
+            <xpath expr="//header//button[@name='refund']" position="after">
+                <field name="show_update_fiscal" invisible="1"/>
+                <button name="action_info_tfhka_wizard" string="Actualizar datos fiscales" class="oe_highlight"
+                    type="object" invisible="show_update_fiscal != True"/>
+            </xpath>
+            <xpath expr="//header//button[@name='refund']" position="attributes">
+                <attribute name="invisible">state == 'draft' or not has_refundable_lines or is_tax_box == True</attribute>
+            </xpath>
+		</field>
+	</record>
+
+    <record id="view_invoice_tree_tfhka" model="ir.ui.view">
+        <field name="name">view_invoice_tree_tfhka</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="invoice_date" position="after">
+                <field name="printer_serial" optional="show"/>
+                <field name="fiscal_invoice_number" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_move_form_tfhka" model="ir.ui.view">
+        <field name="name">view_move_form_tfhka</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_shipping_id" position="after">
+                <label for="printer_serial"/>
+                <div class="o_col">
+                    <field name="printer_serial" readonly="True"/>
+                </div>
+                <label for="fiscal_invoice_number"/>
+                <div class="o_col">
+                    <field name="fiscal_invoice_number" readonly="True"/>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_pos_session_form_tfhka" model="ir.ui.view">
+        <field name="name">view_pos_session_form_tfhka</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//button[@name='show_cash_register']" position="after">
+                <button name="show_fiscal_report_z" type="object" class="oe_stat_button" icon="fa-bars" groups="account.group_account_readonly" invisible="config_id.is_tax_box == False">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Reporte Z</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

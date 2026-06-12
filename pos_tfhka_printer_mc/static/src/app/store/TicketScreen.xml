@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="TicketScreenTFHKA" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[contains(@class, 'orders')]//div[contains(@class, 'header-row')]//div[contains(@class, 'col wide')][2]" position="after">
+            <t t-if="this.pos.config.is_tax_box">
+                <div class="col wide">Número de factura fiscal</div>
+                <div class="col wide">Serial de la impresora</div>
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'orders')]//div[contains(@class, 'order-row')]//div[contains(@class, 'col wide')][2]" position="after">
+            <t t-if="this.pos.config.is_tax_box">
+                <div class="col wide p-2">
+                    <div><t t-esc="order.fiscal_invoice_number || ''"></t></div>
+                </div>
+                <div class="col wide p-2">
+                    <div><t t-esc="order.printer_serial || ''"></t></div>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'pads')]//button[contains(@t-on-click, '() => doPrint.call(_selectedSyncedOrder)')]" position="attributes">
+            <attribute name="t-attf-style">#{ this.pos.config.is_tax_box == true ? 'display: none!important;' : '' }</attribute>
+        </xpath>
+    </t>
+
+    <t t-name="InvoiceButtonTFHKA" t-inherit="point_of_sale.InvoiceButton" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button" position="after">
+            <t t-if="this.pos.config.is_tax_box">
+                <div class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1 print-receipt-fiscal" t-on-click="() => this.generateOrder()">
+                    <i class="fa fa-file-pdf-o me-1"></i>
+                    <span> </span>
+                    <span>
+                        <t t-esc="commandName"></t>
+                    </span>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//button[contains(@class, 'control-button')]" position="attributes">
+            <attribute name="t-attf-style">#{ this.pos.config.is_tax_box == true ? 'display: none!important;' : '' }</attribute>
+        </xpath>
+    </t>
+
+ </templates>

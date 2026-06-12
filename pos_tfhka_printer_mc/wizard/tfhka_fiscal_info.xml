@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="tfhka_fiscal_info_wz" model="ir.ui.view">
+        <field name="name">tfhka.fiscal.info.wizard.form</field>
+        <field name="model">tfhka.fiscal.info.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Actualizar datos fiscales">
+                <group>
+                    <field name="pos_order_id" readonly="1" options="{ 'no_create': True, 'no_create_edit': True, 'no_open':True }"/>
+                    <field name="partner_id" readonly="1" options="{ 'no_create': True, 'no_create_edit': True, 'no_open':True }"/>
+                </group>
+                <group>
+                    <field name="currency_id" invisible="True"/>
+                    <field name="amount_tax"/>
+                    <field name="amount_total"/>
+                </group>
+                <group>
+                    <field name="fiscal_invoice_number"/>
+                    <field name="printer_serial"/>
+                </group>
+                <footer>
+                    <button name="action_save_info_tfhka" string="Actualizar" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

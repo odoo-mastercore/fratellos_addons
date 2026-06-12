@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_smart_orderpoint_tree_editable" model="ir.ui.view">
+        <field name="name">smart.orderpoint.tree.editable</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//list" position="inside">
+                <header>
+                    <button name="open_wizard" icon="fa-truck" type="object" string=""/>
+                </header>
+            </xpath> -->
+            <!-- <xpath expr="//list/field[@name='product_id']" position="after">
+                <field name="smart_orderpoint" />
+            </xpath> -->
+            <xpath expr="//list/field[@name='visibility_days']" position="after">
+                <field name="date_from" optional="show"/>
+                <field name="date_to" optional="show"/>
+                <field name="quantity_sale" optional="show" string="Vendido x Unidad"/>
+                <field name="quantity_purchase" optional="show"/>
+                <field name="ratio" optional="hide"/>
+                <field name="date_order" optional="hide"/>
+                <field name="sold_uc" string="Vendido x UC" optional="show"/>
+                <field name="purchase_price" optional="show"/>
+                <field name="purchased_price" optional="show"/>
+                <field name="discount" optional="hide"/>
+                <field name="negotation_state" optional="hide"/>
+            </xpath>
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-danger">negotation_state=='warning'</attribute>
+                <attribute name="decoration-success">negotation_state=='success'</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='product_id']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='company_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='location_id']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='warehouse_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='qty_on_hand']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='qty_forecast']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='visibility_days']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='route_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='trigger']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='group_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='product_min_qty']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='product_max_qty']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='qty_multiple']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='qty_to_order']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='qty_to_order']" position="after">
+                <field name="qty_to_order_uom" optional="show"/>
+            </xpath>
+            <xpath expr="//list/field[@name='qty_to_order']" position="before">
+                <field name="uom_po_id" optional="show"/>
+            </xpath>
+            <xpath expr="//list/field[@name='product_uom_name']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

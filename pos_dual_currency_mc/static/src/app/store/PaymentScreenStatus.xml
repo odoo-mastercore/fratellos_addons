@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="PaymentScreenStatusPDCMC" t-inherit="point_of_sale.PaymentScreenStatus" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[contains(@t-esc, 'remainingText')]" position="after">
+            <t t-esc="' ≈ ' + remainingTextForeign" />
+        </xpath>
+        <xpath expr="//t[contains(@t-esc, 'changeText')]" position="after">
+            <t t-esc="' ≈ ' + changeTextForeign" />            
+        </xpath>
+    </t>
+
+ </templates>

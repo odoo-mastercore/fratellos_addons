@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="PartnerListPDCMC" t-inherit="point_of_sale.PartnerList" t-inherit-mode="extension" owl="1">
+        <xpath expr="//table//thead//th[1]" position="before">
+            <th class="py-2">RIF / Cédula</th>
+        </xpath>
+    </t>
+
+    <t t-name="PartnerLinePDCMC" t-inherit="point_of_sale.PartnerLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[contains(@t-else, '')]//tr[contains(@class, 'partner-line')]//td[1]" position="before">
+            <td>
+                <b t-esc="props.partner.vat or ''" />
+            </td>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'partner-due')]//span[contains(@t-if, 'this.partnerInfos.totalDue > 0')]/t" position="after">
+            <t t-esc="' ≈ ' + env.utils.formatCurrencyForeign((this.partnerInfos.totalDue * pos.config.show_currency_rate), pos.config.show_currency_id)"/>
+        </xpath>
+    </t>
+
+ </templates>

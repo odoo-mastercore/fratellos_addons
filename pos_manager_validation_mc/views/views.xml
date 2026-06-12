@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="res_config_settings_view_form_pmv" model="ir.ui.view">
+        <field name="name">res_config_settings_view_form_pmv </field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_iface_big_scrollbars']/../.." position="after">
+                <block id="tfhka_res_config" title="Validaciones de acceso">
+                    <setting>
+                        <field name="close_pos"/>
+                    </setting>
+                    <setting>
+                        <field name="order_delete"/>
+                    </setting>
+                    <setting>
+                        <field name="order_line_delete"/>
+                    </setting>
+                     <setting>
+                        <field name="qty_detail"/>
+                    </setting>
+                    <setting>
+                        <field name="discount_app"/>
+                    </setting>
+                    <setting>
+                        <field name="disabled_discount_app"/>
+                    </setting>
+                    <setting>
+                        <field name="payment_perm"/>
+                    </setting>
+                    <setting>
+                        <field name="price_change"/>
+                    </setting>
+                    <setting>
+                        <field name="disabled_price_change"/>
+                    </setting>
+                    <setting>
+                        <field name="move_in_out_cash"/>
+                    </setting>
+                    <setting>
+                        <field name="restrict_pos_product_category_active"/>
+                        <field name="pos_product_category_restrict_ids" widget="many2many_tags" invisible="restrict_pos_product_category_active == False"/>
+                    </setting>
+                    <setting>
+                        <field name="restrict_pos_payment_method_active"/>
+                        <field name="pos_payment_method_restrict_ids" widget="many2many_tags" invisible="restrict_pos_payment_method_active == False"/>
+                    </setting>
+                    <setting>
+                        <field name="return_orders"/>
+                    </setting>
+                    <setting>
+                        <field name="set_fiscal_position"/>
+                    </setting>
+                    <setting>
+                        <field name="set_pricelist_product"/>
+                    </setting>
+                    <setting>
+                        <field name="hide_pricelist_foreign_currency"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_access_history_tree" model="ir.ui.view">
+        <field name="name">view_pos_access_history_tree</field>
+        <field name="model">pos.access.history</field>
+        <field name="arch" type="xml">
+            <list string="Historial de acceso en pos" create="0" edit="0" delete="0">
+                <field name="create_date" string="Fecha"/>
+                <field name="session_id"/>
+                <field name="employee_id"/>
+                <field name="name"/>
+                <field name="pos_category_id"/>
+                <field name="product_id"/>
+                <field name="pos_payment_method_id"/>
+                <field name="pos_order_id"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_pos_access_history" model="ir.actions.act_window">
+        <field name="name">Historial de acceso en pos</field>
+        <field name="res_model">pos.access.history</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_pos_access_history_tree"/>
+        <field name="context">{'create': False, 'edit': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Historial de acceso en pos
+            </p>
+        </field>
+     </record>
+
+    <menuitem
+        name="Historial de acceso en pos"
+        id="menu_pos_access_history"
+        sequence="5"
+        parent="point_of_sale.menu_point_config_product"
+        action="action_pos_access_history"/>
+
+
+    <record id="view_pos_session_form_pmv" model="ir.ui.view">
+        <field name="name">view_pos_session_form_pmv</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']//button[@name='show_cash_register']" position="after">
+                <button name="show_pos_access_history" type="object" class="oe_stat_button" icon="fa-bars" string="Historial de acceso" groups="account.group_account_readonly"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_session_form_pmv" model="ir.ui.view">
+        <field name="name">view_pos_session_form_pmv</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//button[@name='show_cash_register']" position="after">
+                <button name="show_pos_access_history" type="object" class="oe_stat_button" icon="fa-bars" groups="account.group_account_readonly">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Historial de acceso</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

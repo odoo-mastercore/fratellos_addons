@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_currency_rate_alternative,pos_dual_currency.res_currency_rate_alternative,model_res_currency_rate_alternative,base.group_user,1,1,1,1

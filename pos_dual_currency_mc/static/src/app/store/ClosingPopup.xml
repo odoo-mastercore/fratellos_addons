@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ClosePosPopupPDCMC" t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//span[contains(@t-esc, 'env.utils.formatCurrency(Math.abs(props.default_cash_details.payment_amount))')]/.." position="after">
+            <div t-if="props.default_cash_details.payment_amount_change" class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                <span>Cambio en <t t-esc="props.default_cash_details.name"/></span>
+                <span class="align-top" t-esc="env.utils.formatCurrency(props.default_cash_details.payment_amount_change)"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//div[contains(@t-foreach, 'props.non_cash_payment_methods')]//span[contains(@t-esc, 'pm.name')]/.." position="after">
+            <t t-if="pm.type == 'cash'">
+                <div class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                    <span>Opening</span>
+                    <span t-esc="env.utils.formatCurrencyForeign(pm.opening, pm.currency_format.id)" />
+                </div>
+                <div t-if="pm.payment_amount_pay" class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                    <span>Payments in <t t-esc="pm.name"/></span>
+                    <span class="align-top" t-esc="env.utils.formatCurrencyForeign(pm.payment_amount_pay, pm.currency_format.id)"/>
+                </div>
+                <div t-if="pm.payment_amount_change" class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                    <span>Cambio en <t t-esc="pm.name"/></span>
+                    <span class="align-top" t-esc="env.utils.formatCurrencyForeign(pm.payment_amount_change, pm.currency_format.id)"/>
+                </div>
+                <PaymentMethodBreakdown title.translate="Cash In / Out" total_amount="pm.cash_box_out_move" transactions="pm.moves" enable_currencies="pm.enable_currencies" currency_format_id="pm.currency_id"/>
+            </t>
+            <t t-else="">
+                <div t-if="pm.payment_amount_pay" class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                    <span>Payments in <t t-esc="pm.name"/></span>
+                    <span class="align-top" t-esc="env.utils.formatCurrencyForeign(pm.payment_amount_pay, pm.currency_format.id)"/>
+                </div>
+                <div t-if="pm.payment_amount_change" class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                    <span>Cambio en <t t-esc="pm.name"/></span>
+                    <span class="align-top" t-esc="env.utils.formatCurrencyForeign(pm.payment_amount_change, pm.currency_format.id)"/>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//div[contains(@t-foreach, 'props.non_cash_payment_methods')]//span[contains(@t-esc, 'env.utils.formatCurrency(pm.amount)')]" position="replace">
+            <t t-if="pm.enable_currencies">
+                <span t-esc="env.utils.formatCurrencyForeign(pm.amount, pm.currency_format.id)" />
+            </t>
+            <t t-else="">
+                <span t-esc="env.utils.formatCurrency(pm.amount)" />
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//div[contains(@t-foreach, 'props.non_cash_payment_methods')]//span[contains(@t-esc, 'env.utils.formatCurrency(counted)')]" position="replace">
+            <t t-if="pm.enable_currencies">
+                <span t-esc="env.utils.formatCurrencyForeign(counted, pm.currency_format.id)" />
+            </t>
+            <t t-else="">
+                <span t-esc="env.utils.formatCurrency(counted)" />
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//div[contains(@t-foreach, 'props.non_cash_payment_methods')]//span[contains(@t-esc, 'env.utils.formatCurrency(diff)')]" position="replace">
+            <t t-if="pm.enable_currencies">
+                <span t-esc="env.utils.formatCurrencyForeign(diff, pm.currency_format.id)" />
+            </t>
+            <t t-else="">
+                <span t-esc="env.utils.formatCurrency(diff)" />
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//span[contains(@t-esc, 'env.utils.formatCurrency(Math.abs(props.default_cash_details.payment_amount))')]/.." position="replace">
+            <div t-if="props.default_cash_details.payment_amount_pay" class="d-flex align-items-center justify-content-between text-muted border-start ps-2">
+                <span>Payments in <t t-esc="props.default_cash_details.name"/></span>
+                <span class="align-top" t-esc="env.utils.formatCurrency(Math.abs(props.default_cash_details.payment_amount_pay))"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//div[contains(@t-foreach, 'props.non_cash_payment_methods')]//t[contains(@t-set, 'diff')]" position="replace">
+            <t t-if="pm.type != 'pay_later'">
+                <t t-set="diff" t-value="getDifference(pm.id)"/>    
+            </t>
+            <t t-else="">
+                <t t-set="diff" t-value="0"/>
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'payment-methods-overview')]//div[contains(@t-foreach, 'props.non_cash_payment_methods')]//t[contains(@t-set, 'counted')]" position="replace">
+            <t t-if="pm.type != 'pay_later'">
+                <t t-set="counted" t-value="env.utils.parseValidFloat(state.payments[pm.id].counted)" />
+            </t>
+            <t t-else="">
+                <t t-set="counted" t-value="0"/>
+            </t>
+        </xpath>
+        <xpath expr="//t[contains(@t-if, '_showDiff')]" position="after">
+            <t t-if="!_showDiff and pm.amount != 0 and pm.type != 'pay_later'">
+                <span><t t-esc="pm.name" /> Count</span>
+                <div class="d-flex w-100 gap-2 mt-1">
+                    <Input tModel="[state.payments[pm.id], 'counted']"
+                        callback.bind="(value) =>  this.setManualCashInput(value)"
+                        isValid.bind="env.utils.isValidFloat" class="'cash-input w-100'"/>
+                    <!--<t t-if="pm.type == 'cash'">
+                        <button class="icon fa fa-clone btn btn-secondary" t-on-click="autoFillCashCountNonDefaultCash(pm.id)" />
+                    </t>-->
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//button[contains(@t-on-click, 'openDetailsPopup')]" position="attributes">
+            <attribute name="hidden">hidden</attribute>
+        </xpath>
+        <xpath expr="//button[contains(@t-on-click, 'autoFillCashCount')]" position="attributes">
+            <attribute name="hidden">hidden</attribute>
+        </xpath>
+    </t>
+    
+ </templates>

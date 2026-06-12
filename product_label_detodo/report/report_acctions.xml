@@ -1,0 +1,39 @@
+<odoo>
+    <!-- Acción del reporte -->
+    <record id="dymo_label_report_priceless" model="ir.actions.report">
+        <field name="name">Etiquetas Dymo Sin Precio</field>
+        <field name="model">product.product</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_label_detodo.dymo_label_template_priceless</field>
+        <field name="report_file">product_label_detodo.dymo_label_template_priceless</field>
+        <field name="paperformat_id" ref="product_label_detodo.paperformat_label_sheet_dymo_priceless"/>
+        <field name="print_report_name">'Etiqueta: %s' % (object.name)</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Nueva accion del Reporte -->
+    <record id="dymo_label_report_all_tariffs" model="ir.actions.report">
+        <field name="name">Etiquetas Dymo Con Precio</field>
+        <field name="model">product.product</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_label_detodo.dymo_label_template_all_tariffs</field>
+        <field name="report_file">product_label_detodo.dymo_label_template_all_tariffs</field>
+        <field name="paperformat_id" ref="product_label_detodo.paperformat_label_sheet_dymo_priceless"/>
+        <field name="print_report_name">'Etiqueta: %s' % (object.name)</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!--    Override Dymo Nuevo-->
+    <record id="action_report_dymo_override" model="ir.actions.report">
+        <field name="name">Etiqueta Producto Dymo</field>
+        <field name="model">product.product</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_label_detodo.dymo_override_template</field>
+        <field name="report_file">product_label_detodo.dymo_override_template</field>
+        <field name="paperformat_id" ref="product_label_detodo.paperformat_label_sheet_dymo_priceless"/>
+        <field name="print_report_name">'Etiqueta: %s' % (object.name)</field>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
+

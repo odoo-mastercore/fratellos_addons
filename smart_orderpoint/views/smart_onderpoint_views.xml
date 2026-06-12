@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_smart_orderpoint" model="ir.actions.act_window">
+        <field name="name">Compras Inteligentes</field>
+        <field name="res_model">stock.warehouse.orderpoint</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('trigger', '=', 'smartpro')]</field>
+        <field name="view_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
+        <field name="search_view_id" ref="stock.warehouse_orderpoint_search"/>
+    </record>
+
+    <menuitem
+        action="smart_orderpoint.action_smart_orderpoint"
+        id="menu_smart_orderpoint_purchase"
+        parent="purchase.menu_purchase_products"
+        sequence="6" />
+
+</odoo>

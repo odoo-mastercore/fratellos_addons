@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="OrderWidgetPDCMC" t-inherit="point_of_sale.OrderWidget" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[contains(@class, 'order-summary')]//div[contains(@class, 'tax-info')]" position="after">
+           <div t-if="taxTotals.has_tax_groups" class="tax-info subentry d-flex justify-content-end w-100 fs-6 text-muted">
+                <t t-if="taxTotals.amount_tax_foreign != 0">
+                    <div id="order-widget-taxes">
+                        <span t-esc="formatMonetary((taxTotals.amount_tax_foreign), {currencyId: taxTotals.show_currency_id})"
+                              class="tax"/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'order-summary')]//span[contains(@class, 'total')]/.." position="after">
+            <div class="d-flex justify-content-end w-100 fs-2">
+                <span t-esc="formatMonetary((taxTotals.amount_total_foreign), {currencyId: taxTotals.show_currency_id})"
+                      class="total"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'order-summary')]" position="before">
+            <t t-if="showQtyProduct">
+                <div class="gap-1 px-3 py-2 border-top fw-bolder lh-sm d-flex justify-content-between w-100 fs-5">
+                    Cantidad de productos: 
+                    <span t-esc="qtyProduct"
+                          class="total"/>
+                </div>
+            </t>
+        </xpath>
+        
+    </t>
+
+ </templates>
