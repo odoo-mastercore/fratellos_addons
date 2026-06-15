@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ReceiptScreenTFHKA" t-inherit="point_of_sale.ReceiptScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[contains(@t-on-click, '() => doFullPrint.call()')]" position="after">
+            <t t-if="pos.config.is_tax_box and !isPaymentContributions">
+                <button class="button print btn btn-lg btn-secondary w-100 py-3 print-receipt-fiscal" t-on-click="() => printReceiptFiscal.call()">
+                    <i t-attf-class="fa fa-print me-1"/>Imprimir factura
+                </button>
+            </t>
+        </xpath>
+        <xpath expr="//button[contains(@t-on-click, '() => doFullPrint.call()')]" position="attributes">
+            <attribute name="t-attf-style">#{ (pos.config.is_tax_box != true || isPaymentContributions) ? 'display: block;' : 'display: none;' }</attribute>
+        </xpath>
+        <xpath expr="//span[contains(@t-on-click, '() => this.pos.orderDetails(this.currentOrder)')]" position="replace">
+            <t t-if="pos.config.is_tax_box">
+                <span t-if="this.currentOrder.nb_print === 0" class="edit-order-payment badge bg-success text-white rounded cursor-pointer pt-1" t-on-click="() => this.pos.orderDetails(this.currentOrder)">Detalles</span>
+            </t>
+            <t t-else="">
+                <span t-if="this.currentOrder.nb_print === 0" class="edit-order-payment badge bg-success text-white rounded cursor-pointer pt-1" t-on-click="() => this.pos.orderDetails(this.currentOrder)">Editar pago</span>
+            </t>
+        </xpath>
+    </t>
+
+ </templates>

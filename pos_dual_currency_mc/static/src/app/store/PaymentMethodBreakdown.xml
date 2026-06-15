@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="PaymentMethodBreakdownPDCMC" t-inherit="point_of_sale.PaymentMethodBreakdown" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[contains(@t-set-slot, 'header')]//div[contains(@class, 'name-amount')]//t[contains(@t-esc, 'env.utils.formatCurrency(Math.abs(props.total_amount))')]" position="replace">
+            <t t-if="props.enable_currencies">
+                <t t-esc="env.utils.formatCurrencyForeign(Math.abs(props.total_amount), props.currency_format_id)"/>
+            </t>
+            <t t-else="">
+                <t t-esc="env.utils.formatCurrency(Math.abs(props.total_amount))"/>
+            </t>
+        </xpath>
+        <xpath expr="//t[contains(@t-set-slot, 'content')]//div[contains(@t-foreach, 'props.transactions')]//t[contains(@t-esc, 'env.utils.formatCurrency(Math.abs(payment.amount))')]" position="replace">
+            <t t-if="payment.enable_currencies">
+                <t t-esc="env.utils.formatCurrencyForeign(Math.abs(payment.amount), payment.currency_format.id)"/>
+            </t>
+            <t t-else="">
+                <t t-esc="env.utils.formatCurrency(Math.abs(payment.amount))"/>
+            </t>
+        </xpath>
+    </t>
+    
+ </templates>

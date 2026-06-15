@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="TextInputPopupPMV" t-inherit="point_of_sale.TextInputPopup" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dialog//textarea" position="replace">
+            <t t-if="props.type_password">
+                <input class="form-control form-control-lg mx-auto" type="password" t-model="state.inputValue" t-ref="input" t-att-placeholder="props.placeholder" t-on-keydown="onKeydown" />
+            </t>
+            <t t-else="">
+                <textarea t-att-rows="props.rows" class="form-control form-control-lg mx-auto" type="text" t-model="state.inputValue" t-ref="input" t-att-placeholder="props.placeholder" t-on-keydown="onKeydown" />
+            </t>
+        </xpath>
+    </t>
+
+</templates>

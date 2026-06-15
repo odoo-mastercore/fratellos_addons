@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="NavbarPDCMC" t-inherit="point_of_sale.Navbar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[contains(@class, 'pos-rightheader')]//div[contains(@class, 'status-buttons')]" position="before">
+            <t t-if="!this.pos.config.hide_exchange_rate_pos">
+                <div class="p-0 py-3 d-flex fs-3">
+                    <span class="fw-bolder text-end bd-highlight">
+                        <t t-esc="'Tasa de cambio: '"/>
+                        <t t-if="this.pos.config.show_currency_position == 'before'" t-esc="this.pos.config.show_currency_symbol + ' '"/>
+                        <t t-esc="this.pos.config.show_currency_rate"/>
+                        <t t-if="this.pos.config.show_currency_position == 'after'" t-esc="' ' + this.pos.config.show_currency_symbol"/>
+                    </span>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+ </templates>

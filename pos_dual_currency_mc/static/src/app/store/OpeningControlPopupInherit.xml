@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+  <t t-name="OpeningControlPopupPDCMC" t-inherit="point_of_sale.OpeningControlPopup" t-inherit-mode="extension" owl="1">
+      <xpath expr="//div[contains(@class, 'opening-cash-section mb-3')]" position="replace">
+            <t t-foreach="paymentMethodCash" t-as="pm" t-key="pm.id">
+                <div class="opening-cash-section mb-3" t-if="this.cashMethodCount">
+                    <label class="form-label"><t t-esc="pm.name + ' de apertura'"/></label>
+                    <div t-att-class="{ 'w-50': !ui.isSmall }" class="cash-input-sub-section d-flex gap-1">
+                        <!--<t t-if="pm.enable_amount_opening == true">
+                            <Input tModel="[pm, 'openingCash']"
+                                isValid.bind="env.utils.isValidFloat"
+                                callback.bind="handleInputChange"
+                                autofocus="true"
+                                placeholder.translate="Opening Balance Eg: 123"
+                                readonly/>
+                        </t>
+                        <t t-else="">-->
+                        <Input tModel="[pm, 'openingCash']"
+                            isValid.bind="env.utils.isValidFloat"
+                            callback.bind="handleInputChange"
+                            autofocus="true"
+                            placeholder.translate="Opening Balance Eg: 123"/>
+                        <!--</t>
+                        <div class="button icon btn btn-secondary btn-lg lh-lg" t-on-click="openDetailsPopup">
+                            <i class="fa fa-money" role="img" title="Open the money details popup"/>
+                        </div>-->
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+ </templates>

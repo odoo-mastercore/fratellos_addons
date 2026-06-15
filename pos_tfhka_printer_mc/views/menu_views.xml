@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <menuitem id="cw_tfhka_menu" name="Impresora TFHKA" parent="account.menu_finance_reports" sequence="200"/>
+        <!--<menuitem id="report_x_prosecutor_pnp_fp" parent="cw_pnp_menu" action="account.action_move_out_invoice_type" name="Report X"  sequence="201"/>-->
+
+         <record id="tfhka_report_z_tree_view" model="ir.ui.view">
+              <field name="name">tfhka_report_z_tree_view</field>
+              <field name="model">fiscal.report.z</field>
+              <field name="arch" type="xml">
+                  <list create="0" edit="0" delete="0">
+                      <field name="create_date" optional="hide"/>
+                      <field name="company_id"/>
+                      <field name="config_id"/>
+                      <field name="zReportDate"/>
+                      <field name="registeredMachineNumber"/>
+                      <field name="numberOfLastZReport"/>
+                      <field name="lastInvoiceDate"/>
+                      <field name="numberOfLastInvoice"/>
+                      <field name="numberOfLastCreditNote"/>
+                      <field name="numberOfLastDebitNote"/>
+                      <field name="numberOfLastNonFiscal"/>
+                      <field name="freeSalesTax"/>
+                      <field name="generalRate1Sale"/>
+                      <field name="generalRate1Tax"/>
+                      <field name="reducedRate2Sale"/>
+                      <field name="reducedRate2Tax"/>
+                      <field name="additionalRate3Sal"/>
+                      <field name="additionalRate3Tax"/>
+                      <field name="taxBaseSalesIgtf"/>
+                      <field name="taxSalesReceiptIgtf"/>
+                      <field name="valueSalesIgtf"/>
+                      <field name="total_base_charged"/>
+                      <field name="full_tax_value"/>
+                      <field name="total_charged"/>
+                      <field name="freeTaxDevolution"/>
+                      <field name="generalRateDevolution" />
+                      <field name="generalRateTaxDevolution"/>
+                      <field name="reducedRateDevolution"/>
+                      <field name="reducedRateTaxDevolution"/>
+                      <field name="additionalRateDevolution"/>
+                      <field name="additionalRateTaxDevolution"/>
+                      <field name="taxBaseCreditIgtf"/>
+                      <field name="taxCreditReceiptIgtf"/>
+                      <field name="valueCreditIgtf"/>
+                      <field name="total_base_charged_nc"/>
+                      <field name="full_tax_value_nc"/>
+                      <field name="total_charged_nc"/>
+                      <field name="freeTaxDebit"/>
+                      <field name="generalRateDebit" />
+                      <field name="generalRateTaxDebit"/>
+                      <field name="reducedRateDebit"/>
+                      <field name="reducedRateTaxDebit"/>
+                      <field name="additionalRateDebit"/>
+                      <field name="additionalRateTaxDebit"/>
+                      <field name="taxBaseDebitIgtf"/>
+                      <field name="taxDebitReceiptIgtf"/>
+                      <field name="valueDebitIgtf"/>
+                      <field name="total_base_charged_nd"/>
+                      <field name="full_tax_value_nd"/>
+                      <field name="total_charged_nd"/>
+                  </list>
+              </field>
+         </record>
+
+         <record id="tfhka_report_z_view_line_search" model="ir.ui.view">
+              <field name="name">tfhka_report_z_view_line_search</field>
+              <field name="model">fiscal.report.z</field>
+              <field name="arch" type="xml">
+                  <search string="Reporte Z">
+                      <field name="zReportDate"/>
+                      <field name="numberOfLastZReport"/>
+                      <field name="registeredMachineNumber"/>
+                      <separator/>
+                        <filter string="Report Date" name="zReportDate" date="zReportDate" domain="[('zReportDate', '&gt;=', context.get('date_from')), ('zReportDate', '&lt;=', context.get('date_to'))]"/>
+                      <separator/>
+                      <group expand="0" string="Group By">
+                          <filter name="registeredMachineNumber" string="Impresora" domain="[]"
+                                  context="{'group_by':'registeredMachineNumber'}"/>
+                          <filter name="zReportDate" string="Report Date" domain="[]"
+                                  context="{'group_by':'zReportDate'}"/>
+                      </group>
+                  </search>
+              </field>
+        </record>
+
+        <record id="action_tfhka_tax_report_z" model="ir.actions.act_window">
+            <field name="name">Reporte Z (TFHKA)</field>
+            <field name="res_model">fiscal.report.z</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="tfhka_report_z_tree_view"/>
+            <field name="search_view_id" ref="tfhka_report_z_view_line_search"/>
+            <field name="context">{'create': False, 'edit': False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                Reporte Z (TFHKA Printer)
+                </p>
+            </field>
+         </record>
+
+        <menuitem id="menu_action_tfhka_tax_report_z" parent="cw_tfhka_menu" action="action_tfhka_tax_report_z" name="Reporte Z"  sequence="201"/>
+
+        <record id="tfhka_document_printer_tfhka_view" model="ir.ui.view">
+            <field name="name">tfhka_document_printer_tfhka_view</field>
+            <field name="model">document.printer.tfhka</field>
+            <field name="arch" type="xml">
+                <list create="0" edit="0" delete="0">
+                    <field name="create_date" optional="hide"/>
+                    <field name="invoice_date"/>
+                    <field name="serial_printer"/>
+                    <field name="type_document_printer"/>
+                    <field name="invoice_name"/>
+                    <field name="invoice_name_origin"/>
+                    <field name="invoice_date_origin"/>
+                    <field name="serial_printer_origin"/>
+                    <field name="vat"/>
+                    <field name="partner_name"/>
+                    <field name="invoice_bi_ex"/>
+                    <field name="invoice_tax_p"/>
+                    <field name="invoice_bi_g"/>
+                    <field name="invoice_tax_g"/>
+                    <field name="invoice_bi_r"/>
+                    <field name="invoice_tax_r"/>
+                    <field name="invoice_bi_a"/>
+                    <field name="invoice_tax_a"/>
+                    <field name="invoice_bi_igtf"/>
+                    <field name="invoice_tax_igtf"/>
+                    <field name="invoice_bi_t"/>
+                    <field name="invoice_tax_t"/>
+                    <field name="invoice_total"/>
+                </list>
+            </field>
+         </record>
+
+         <record id="tfhka_document_printer_tfhka_search" model="ir.ui.view">
+            <field name="name">tfhka_document_printer_tfhka_search</field>
+            <field name="model">document.printer.tfhka</field>
+            <field name="arch" type="xml">
+                <search string="Documentos - Impresora fiscal (TFHKA)">
+                    <field name="invoice_date"/>
+                    <field name="invoice_name"/>
+                    <field name="serial_printer"/>
+                    <field name="type_document_printer"/>
+                    <separator/>
+                      <filter string="Document Date" name="invoice_date" date="invoice_date" domain="[('invoice_date', '&gt;=', context.get('date_from')), ('invoice_date', '&lt;=', context.get('date_to'))]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="serial_printer" string="Impresora" domain="[]"
+                                context="{'group_by':'serial_printer'}"/>
+                        <filter name="invoice_date" string="Fecha del documento" domain="[]"
+                                context="{'group_by':'invoice_date'}"/>
+                    </group>
+                </search>
+            </field>
+          </record>
+
+         <record id="action_tfhka_document_printer" model="ir.actions.act_window">
+             <field name="name">Documentos - Impresora fiscal (TFHKA)</field>
+             <field name="res_model">document.printer.tfhka</field>
+             <field name="type">ir.actions.act_window</field>
+             <field name="view_mode">list</field>
+             <field name="view_id" ref="tfhka_document_printer_tfhka_view"/>
+             <field name="search_view_id" ref="tfhka_document_printer_tfhka_search"/>
+             <field name="context">{'create': False, 'edit': False}</field>
+             <field name="help" type="html">
+               <p class="o_view_nocontent_smiling_face">
+                 Documentos - Impresora fiscal (TFHKA)
+               </p>
+             </field>
+         </record>
+
+         <!--<menuitem id="menu_action_tfhka_document_printer" parent="cw_tfhka_menu" action="action_tfhka_document_printer" name="Documentos - Impresora fiscal (TFHKA)"  sequence="202"/>-->
+
+         <record id="action_tfhka_extraction_document_wz" model="ir.actions.client">
+            <field name="name">Extraer Documentos - Impresora fiscal (TFHKA)</field>
+            <field name="context">context</field>
+            <field name="tag">pos_tfhka_printer_mc.action_tfhka_extraction_document_wz_js</field>
+        </record>
+        <!--<menuitem name="Extraer Documentos - Impresora fiscal (TFHKA)" id="menu_action_tfhka_extraction_document_wz" parent="cw_tfhka_menu" sequence="204" action="action_tfhka_extraction_document_wz"/>-->
+
+        <record id="tfhka_document_printer_tfhka_wz_view_tree" model="ir.ui.view">
+            <field name="name">tfhka_document_printer_tfhka_wz_view_tree</field>
+            <field name="model">document.printer.tfhka.wz</field>
+            <field name="arch" type="xml">
+                <list create="1" edit="0" delete="0">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="type_document_printer"/>
+                    <field name="type_action"/>
+                    <field name="type_search"/>
+                    <field name="start_doc"/>
+                    <field name="end_doc"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="tfhka_document_printer_tfhka_wz_view_form" model="ir.ui.view">
+            <field name="name">tfhka_document_printer_tfhka_wz_view_form</field>
+            <field name="model">document.printer.tfhka.wz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="type_document_printer"/>
+                            <field name="type_action"/>
+                            <field name="type_search"/>
+                        </group>
+                        <group invisible="type_search == 'date'">
+                            <field name="start_doc"/>
+                            <field name="end_doc"/>
+                        </group>
+                        <group invisible="type_search == 'number'">
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_pos_tfhka" model="ir.actions.act_window">
+            <field name="name">Opciones de TFHKA</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">document.printer.tfhka.wz</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="document_printer_tfhka_form" model="ir.ui.view">
+            <field name="name">Reportes de TFHKA</field>
+            <field name="model">document.printer.tfhka.wz</field>
+            <field name="arch" type="xml">
+              <form id="document_printer_tfhka_form" js_class="printer_tfhka_report" string="Reportes de TFHKA" >
+                <sheet modifiers="{}">
+                  <div class="row mt16 o_settings_container">
+                    <div class="col-6 text-center">
+                        <h2>Reporte X</h2>
+                        <button id="generateReportX" class="btn btn-primary mt16" >Generar Reporte X</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <h2 modifiers="{}">Reporte Z</h2>
+                        <button id="generateReportZ" class="btn btn-primary mt16">Generar Reporte Z</button>
+                    </div>
+                  </div>
+                  <div class="my-3 row d-flex justify-content-center">
+                    <div class="col-10 alert alert-success rounded text-center h5" role="alert" style="display: none;">
+                    </div>
+                    <div class="col-10 alert alert-danger rounded text-center h5" role="alert" style="display: none;">
+                    </div>
+                    <div class="col-10 alert alert-warning rounded text-center h5" role="alert" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="row mt16 w-100 border-top mx-0 px-0">
+                    <div class="col-12 mt-3 text-end">
+                        <button id="closeReport" string="Cancelar" class="btn btn-secondary"></button>
+                    </div>
+                  </div>
+                </sheet>
+                <footer>
+                </footer>
+              </form>
+            </field>
+        </record>
+    </data>
+
+</odoo>

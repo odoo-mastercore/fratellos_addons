@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="dymo_label_template_priceless">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-call="product_label_detodo.report_productlabel_dymo_priceless"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_productlabel_dymo_priceless">
+            <t t-call="web.html_container">
+                <t t-set="barcode_size" t-value="'width:45.5mm;height:7.5mm'"/>
+                <t t-set="table_style" t-value="'width:100%;height:32mm;'"/>
+                <t t-set="padding_page" t-value="'padding: 2mm'"/>
+                <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">
+                    <t t-set="product" t-value="barcode_and_qty_by_product[0]"/>
+                    <t t-foreach="barcode_and_qty_by_product[1]" t-as="barcode_and_qty">
+                        <t t-set="barcode" t-value="barcode_and_qty[0]"/>
+                        <t t-foreach="range(barcode_and_qty[1])" t-as="qty">
+                            <t t-call="product_label_detodo.report_simple_label_dymo_priceless"/>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_simple_label_dymo_priceless">
+            <div class="o_label_sheet o_label_dymo" t-att-style="padding_page">
+                <div class="o_label_full" t-att-style="table_style">
+                    <div class="text-start o_label_small_barcode p-0">
+                        <t t-if="barcode">
+                            <div t-out="barcode" style="padding:0"
+                                 t-options="{'widget': 'barcode', 'quiet': 0, 'symbology': 'auto', 'img_style': barcode_size}"/>
+                            <div class="o_label_name" style="height:1.7em;background-color: transparent;">
+                                <span t-out="barcode"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="p-0 mb-2" style="line-height: 100%;background-color: transparent;padding: 0px;">
+                        <span t-if="product.is_product_variant" t-field="product.display_name"/>
+                        <span t-else="" t-field="product.name"/>
+                        <div class="row w-100 p-0 m-0 mt-2 d-flex justify-content-center">
+                            <strong style="font-size: 1.3em;">
+                                <span t-field="product.default_code"/>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="dymo_label_template_all_tariffs">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-call="product_label_detodo.report_productlabel_dymo_tariffs"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_productlabel_dymo_tariffs">
+            <t t-call="web.html_container">
+                <style>
+                    .label {
+                    width: 100%;
+                    height: 100%;
+                    padding: 4mm;
+                    font-size: 7pt;
+                    page-break-after: always;
+                    }
+                </style>
+
+                <t t-foreach="products" t-as="product">
+                    <t t-set="description" t-value="product['description']"/>
+                    <t t-set="price" t-value="product['price']"/>
+                    <t t-set="price_second_tarrif" t-value="product['price_second_tarrif']"/>
+                    <t t-set="ref_product" t-value="product['ref_product']"/>
+                    <t t-set="date_imp" t-value="product['date_imp']"/>
+                    <t t-set="repeat_qty" t-value="product.get('repeat_qty', 1)"/>
+
+                    <t t-foreach="range(repeat_qty)" t-as="i">
+                        <div class="label">
+                            <span t-esc="description" style="font-size:8pt;"/>
+                            <br/>
+                            <strong>Precio Ref:</strong>
+                            <span t-esc="price"/>
+                            <br/>
+                            <strong>Precio Especial:</strong>
+                            <span t-esc="price_second_tarrif"/>
+                            <br/>
+                            <strong>Ref. Producto:</strong>
+                            <span t-esc="ref_product"/>
+                            <br/>
+                            <strong>Fecha de Imp:</strong>
+                            <span t-esc="date_imp"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="dymo_override_template">
+            <t t-call="product_label_detodo.report_productlabel_dymo_override"/>
+        </template>
+
+        <template id="report_productlabel_dymo_override">
+            <t t-call="web.html_container">
+                <style>
+                    @page {
+                    margin: 0.5mm !important;
+                    padding: 0 !important;
+                    }
+                    body {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    font-family: Arial, sans-serif;
+                    }
+
+                    .label {
+                    width: 100%;
+                    height: 31mm;
+                    padding: 2mm;
+                    font-size: 7pt;
+                    page-break-after: always;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    position: relative;
+                    border: 0.5px solid black;
+                    }
+
+                    .top-table {
+                    width: 100%;
+                    border: 0 !important;
+                    border-style: none !important;
+                    border-collapse: collapse;
+                    margin-bottom: 0.5mm;
+                    font-size: 0.8em;
+                    font-weight: bold;
+                    height: 4mm;
+                    }
+                    .top-table td {
+                    width: 50%;
+                    padding: 0;
+                    border: 0 !important;
+                    border-style: none !important;
+                    vertical-align: top;
+                    }
+                    .top-table .left-align { text-align: left; }
+                    .top-table .right-align { text-align: right; }
+
+                    /* ⭐ CÓDIGO DE BARRAS: REGLAS CONSOLIDADAS Y ÚNICAS (width: 30mm) ⭐ */
+                    .barcode-container {
+                        width: 38mm; /* ANCHO DESEADO DEL CÓDIGO DE BARRAS */
+                        text-align: center;
+                        margin-bottom: 0.5mm;
+                        height: 7mm;
+                        overflow: hidden;
+                        margin-left: auto; /* Centrado */
+                        margin-right: auto; /* Centrado */
+                    }
+                    .barcode-container .o_label_barcode {
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .barcode-container .o_label_barcode img {
+                        max-height: 90%;
+                        width: 100%;
+                    }
+                    .barcode-container .o_label_barcode span {
+                        font-size: 0.6em;
+                        font-weight: normal;
+                        line-height: 1;
+                        margin-top: 0.5mm;
+                    }
+                    /* FIN ESTILO BARCODE */
+
+                    .product-description {
+                    font-size: 1.0em;
+                    font-weight: bold;
+                    line-height: 1.2;
+                    margin-bottom: 1mm;
+                    text-transform: uppercase;
+                    }
+
+                    .main-price-container {
+                    display: flex;
+                    align-items: baseline;
+                    margin-bottom: 1mm;
+                    }
+                    .main-price-label {
+                    font-size: 0.8em;
+                    font-weight: bold;
+                    margin-right: 1mm;
+                    white-space: nowrap;
+                    }
+                    /* AJUSTE DE TAMAÑO: Precio Principal */
+                    .main-price {
+                    font-size: 2em; /* Reducido de 3em a 2em */
+                    font-weight: bold;
+                    line-height: 1;
+                    }
+
+                    .corner-price-special {
+                    position: absolute;
+                    bottom: 2mm;
+                    right: 2mm;
+                    text-align: right;
+                    line-height: 1;
+                    }
+
+                    /* AJUSTE DE TAMAÑO: Precio Especial */
+                    .special-price-value {
+                    font-size: 2em; /* Reducido de 3em a 2em */
+                    font-weight: bold;
+                    line-height: 1;
+                    display: inline-block;
+                    vertical-align: middle;
+                    }
+
+                    .special-price-label {
+                    font-size: 0.8em;
+                    font-weight: bold;
+                    display: block;
+                    text-align: right;
+                    }
+
+                    .price-ref-tag {
+                    font-size: 0.8em;
+                    font-weight: bold;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-right: 1mm;
+                    white-space: nowrap;
+                    }
+
+                    .price-line-container {
+                    white-space: nowrap;
+                    text-align: right;
+                    display: block;
+                    }
+
+                    .logo-detodo {
+                    position: absolute;
+                    bottom: 2mm;
+                    right: 2mm;
+                    width: 25mm;
+                    height: auto;
+                    }
+                </style>
+
+                <t t-foreach="products" t-as="product">
+                    <t t-set="description" t-value="product['description']"/>
+                    <t t-set="price" t-value="product['price']"/>
+                    <t t-set="price_second_tarrif" t-value="product['price_second_tarrif']"/>
+                    <t t-set="ref_product" t-value="product['ref_product']"/>
+                    <t t-set="date_imp" t-value="product['date_imp']"/>
+                    <t t-set="barcode" t-value="product['barcode']"/>
+                    <t t-set="repeat_qty" t-value="product.get('repeat_qty', 1)"/>
+
+                    <t t-foreach="range(repeat_qty)" t-as="i">
+                        <div class="label">
+                            <table class="top-table">
+                                <tr>
+                                    <td class="left-align">
+                                        <t t-esc="ref_product"/>
+                                    </td>
+                                    <td class="right-align">
+                                        <t t-esc="date_imp"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="barcode-container">
+                                <t t-if="barcode">
+                                    <div class="o_label_barcode">
+                                        <div t-out="barcode"
+                                            t-options="{'widget': 'barcode', 'quiet': 0, 'symbology': 'auto', 'img_style': 'height: 5mm; width: 100%;'}"
+                                        />
+                                        <span>
+                                            <t t-out="barcode"/>
+                                        </span>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <div class="product-description">
+                                <span t-esc="description"/>
+                            </div>
+
+                            <div class="main-price-container">
+                                <span class="main-price-label">Ref:</span>
+                                <span class="main-price">
+                                    <t t-esc="price"/>
+                                </span>
+                            </div>
+
+                            <div class="corner-price-special">
+                                <div class="price-line-container">
+                                    <span class="price-ref-tag">Precio Especial</span>
+                                    <span class="price-ref-tag">REF:</span>
+                                    <span class="special-price-value">
+                                        <t t-esc="price_second_tarrif"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

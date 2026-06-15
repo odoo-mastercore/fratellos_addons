@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+# Author: Mastercore Sinapsys Global®
+# Copyright: 2019-Present.
+# License OPL-1 (Odoo Proprietary License v1.0) 
+# See https://www.odoo.com/documentation/master/legal/licenses.html
+#
+###############################################################################
+-->
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_inherit_bcv" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.bcv</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@name='main_currency_setting_container']" position="inside">
+                    <setting name="bcv_currencies" invisible="group_multi_currency==False">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <div class="o_setting_left_pane">
+                                    <field name="currency_rate_bcv" />
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="currency_rate_bcv"/>
+                                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." />
+                                    <div class="text-muted">
+                                        Use Currency rate the BCV (venezuela central bank).
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt16" invisible="currency_rate_bcv==False">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="currency_available_ids"/>
+                                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." />
+                                    <div class="text-muted">
+                                        Use Currency rate the BCV (venezuela central bank) to Currencies.
+                                    </div>
+                                    <field name="currency_available_ids" widget="many2many_tags"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-group" invisible="currency_rate_bcv==False">
+                            <div class="row mt16">
+                                <div class="o_setting_left_pane">
+                                    <field name="force_rate_all_currencys" />
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="force_rate_all_currencys"/>
+                                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." />
+                                    <div class="text-muted">
+                                        Force the exchange rate of all BCV currencies to the value of another currency (Venezuela Central Bank).
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt16" invisible="force_rate_all_currencys==False">
+                                <div class="row mt16">
+                                    <div class="o_setting_right_pane">
+                                        <label for="force_currency_id"/>
+                                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." />
+                                        <div class="text-muted">
+                                            Use Currency rate the BCV (venezuela central bank) all to Currencies.
+                                        </div>
+                                        <field name="force_currency_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <div class="o_setting_left_pane">
+                                    <field name="block_days_bcv" />
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="block_days_bcv"/>
+                                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." />
+                                    <div class="text-muted">
+                                        Block day for rate the BCV (venezuela central bank).
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt16" invisible="block_days_bcv==False">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="days_bcv_ids"/>
+                                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." />
+                                    <div class="text-muted">
+                                        Block days for rate the BCV (venezuela central bank).
+                                    </div>
+                                    <field name="days_bcv_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="content-group">
+                                    <div class="mt8">
+                                        <button name="%(l10n_ve_currency_bcv.action_currency_bcv_form_holidays)d" icon="fa-arrow-right" type="action" string="Días feriados bancarios" class="btn-link"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </setting>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

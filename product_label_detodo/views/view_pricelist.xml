@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_product_pricelist_view_form" model="ir.ui.view">
+        <field name="name">inherit.product.pricelist.view.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <field name="country_group_ids" position="after">
+                <field name="enable_secondary_tariff" widget="boolean_toggle"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+	<template id="price_consultant_template" name="Price Consultant">
+		<t t-call="portal.frontend_layout">
+            <t t-set="is_portal" t-value="False"/>
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+			<!-- Componente Reactivo -->
+			<div id="consultant" />
+			<div id="wrap" class="oe_structure"></div>
+		</t>
+	</template>
+</odoo>

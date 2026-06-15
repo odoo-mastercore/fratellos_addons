@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+	<record id="view_company_form_pcsmc" model="ir.ui.view">
+        <field name="name">view_company_form_pcsmc</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="foreign_currency_id"/>
+                <field name="include_order_details_in_pos_detail_report" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_form_multi_currency_pos" model="ir.ui.view">
+        <field name="name">res_config_settings_view_form_multi_currency_pos </field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_iface_big_scrollbars']/.." position="after">
+                <setting>
+                    <field name="show_dual_currency"/>
+                    <field name="show_currency" invisible="show_dual_currency == False"/>
+                </setting>
+                <setting>
+                    <field name="opening_cash_mode"/>
+                </setting>
+                <setting>
+                    <field name="enable_popup_references_payment"/>
+                </setting>
+                <setting>
+                    <field name="forced_button_invoice"/>
+                </setting>
+                <setting>
+                    <field name="disabled_print_invoice"/>
+                </setting>
+                <setting>
+                    <field name="clear_search_adding_product"/>
+                </setting>
+                <!--<div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="hide_detail_kanban"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="hide_detail_kanban"/>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="disabled_pricelist_bottom"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="disabled_pricelist_bottom"/>
+                    </div>
+                </div>-->
+                <setting>
+                    <field name="hide_exchange_rate_pos"/>
+                </setting>
+                <setting>
+                    <field name="enable_automatic_box_opening"/>
+                </setting>
+                <setting>
+                    <field name="view_quantity_products"/>
+                </setting>
+                <!--<div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="hide_button_orders"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="hide_button_orders"/>
+                    </div>
+                </div>-->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_payment_method_view_form_inherit" model="ir.ui.view">
+		<field name="name">pos.payment.method.form.inherit</field>
+		<field name="model">pos.payment.method</field>
+		<field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+		<field name="arch" type="xml">
+            <field name="journal_id" position="before">
+                <field name="enable_currencies" widget="boolean_toggle"/>
+            </field>
+			<field name="journal_id" position="after">
+                <field name="show_currency_equivalence" widget="boolean_toggle" invisible="enable_currencies == True"/>
+				<field name="currency_id" invisible="1"/>
+			</field>
+            <field name="outstanding_account_id" position="before">
+                <field name="journal_type" invisible="True"/>
+                <field name="company_id" invisible="True"/>
+                <div colspan="2">
+                    <group invisible="journal_type != 'cash'">
+                        <field name="enable_amount_opening" widget="boolean_toggle"/>
+                        <div colspan="2">
+                            <group invisible="enable_amount_opening == False">
+                                <field name="amount_opening"/>
+                            </group>
+                        </div>
+                    </group>
+                    <group invisible="journal_type != 'bank'">
+                        <field name="enable_payment_lot" widget="boolean_toggle"/>
+                        <field name="enable_payment_reference" widget="boolean_toggle"/>
+                        <field name="enable_payment_terminal" widget="boolean_toggle"/>
+                        <field name="enable_commission" widget="boolean_toggle"/>
+                        <div colspan="2">
+                            <group invisible="enable_commission == False">
+                                <field name="default_account_commission_id"/>
+                                <field name="rate_commission"/>
+                            </group>
+                        </div>
+                        <field name="enable_islr" widget="boolean_toggle"/>
+                        <div colspan="2">
+                            <group invisible="enable_islr == False">
+                                <field name="default_account_islr_id"/>
+                                <field name="rate_islr"/>
+                            </group>
+                        </div>
+                    </group>
+                </div>
+            </field>
+		</field>
+	</record>
+
+    <record id="pos_view_pos_order_tree" model="ir.ui.view">
+		<field name="name">pos_view_pos_order_tree</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='amount_total']" position="after">
+				<field name="company_foreign_currency_id" optional="hide"/>
+                <field name="amount_total_foreign" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+                <field name="amount_paid" optional="show" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_paid_foreign" optional="show" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+				<field name="pay_amount_cur" string="Pagos" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="pay_amount_foreign" string="Pagos en Divisas" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+			</xpath>
+            <xpath expr="//field[@name='amount_total']" position="before">
+                <field name="amount_tax" optional="show" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_tax_foreign" optional="show" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+            </xpath>
+		</field>
+	</record>
+
+    <record id="view_pos_order_filter_pdcmc" model="ir.ui.view">
+        <field name="name">view_pos_order_filter_pdcmc</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group//filter[@name='order_month']" position="after">
+                <filter string="Tipo de pedido" name="order_credit" domain="[]" context="{'group_by': 'order_credit'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_order_view_inherit_form" model="ir.ui.view">
+		<field name="name">pos.order.inherit.form.view</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='payment_ids']/list/field[@name='amount']" position="after">
+				<field name="pay_currency_id" optional="hide"/>
+				<field name="amount_foreign" widget="monetary" options="{'currency_field': 'pay_currency_id'}"/>
+			</xpath>
+            <xpath expr="//field[@name='payment_ids']/list/field[@name='amount']" position="before">
+                <field name="payment_lot" optional="show"/>
+				<field name="payment_reference" optional="show"/>
+				<field name="payment_terminal" optional="show"/>
+			</xpath>
+			<xpath expr="//field[@name='lines']/list/field[@name='price_unit']" position="after">
+				<field name="price_unit_foreign" widget="monetary" optional="hide" options="{'currency_field': 'company_foreign_currency_id'}"/>
+			</xpath>
+			<xpath expr="//field[@name='lines']/list/field[@name='price_subtotal']" position="after">
+				<field name="price_subtotal_foreign" widget="monetary" optional="hide" options="{'currency_field': 'company_foreign_currency_id'}"/>
+			</xpath>
+			<xpath expr="//field[@name='lines']/list/field[@name='price_subtotal_incl']" position="after">
+				<field name="price_subtotal_incl_foreign" widget="monetary" optional="hide" options="{'currency_field': 'company_foreign_currency_id'}"/>
+                <field name="company_foreign_currency_id" optional="hide" />
+                
+			</xpath>
+            <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="company_foreign_currency_id" invisible="True"/>
+                
+                <field name="amount_tax_foreign" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+            </xpath>
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="amount_total_foreign" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+            </xpath>
+            <xpath expr="//field[@name='amount_paid']" position="after">
+                <field name="amount_paid_foreign" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="currency_rate_foreign"/>
+            </xpath>
+		</field>
+	</record>
+
+    <record id="view_pos_payment_form_dpc" model="ir.ui.view">
+		<field name="name">view_pos_payment_form_dpc</field>
+		<field name="model">pos.payment</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_payment_form"/>
+		<field name="arch" type="xml">
+			<field name="amount" position="after">
+				<field name="pay_currency_id" invisible="True"/>
+				<field name="amount_foreign" widget="monetary" options="{'currency_field': 'pay_currency_id'}"/>
+			</field>
+		</field>
+	</record>
+
+    <record id="view_pos_payment_tree_dpc" model="ir.ui.view">
+		<field name="name">view_pos_payment_tree_dpc</field>
+		<field name="model">pos.payment</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_payment_tree"/>
+		<field name="arch" type="xml">
+			<field name="amount" position="after">
+				<field name="pay_currency_id" invisible="True"/>
+				<field name="amount_foreign" widget="monetary" options="{'currency_field': 'pay_currency_id'}"/>
+			</field>
+		</field>
+	</record>
+
+    <record id="view_bank_statement_tree_pdcmc" model="ir.ui.view">
+		<field name="name">view_bank_statement_tree_pdcmc</field>
+		<field name="model">account.bank.statement</field>
+		<field name="inherit_id" ref="account.view_bank_statement_tree"/>
+		<field name="arch" type="xml">
+			<field name="balance_start" position="before">
+				<field name="currency_id" optional="hide"/>
+				<field name="opening_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+			</field>
+            <field name="journal_id" position="before">
+				<field name="payment_method_id" invisible="payment_method_id == False"/>
+			</field>
+            <field name="name" position="before">
+				<field name="pos_session_id" invisible="pos_session_id == False"/>
+			</field>
+            <field name="balance_end_real" position="before">
+				<field name="balance_end" invisible="balance_end == False"/>
+			</field>
+		</field>
+	</record>
+        
+    <!--<record id="view_account_bank_statement_tree_pdcmc" model="ir.ui.view">
+        <field name="name">view_account_bank_statement_tree_pdcmc</field>
+        <field name="model">account.bank.statement</field>
+        <field name="arch" type="xml">
+            <tree string="Point of Sale Session - Bank Statement" create="0">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="journal_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="balance_start" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="balance_end_real" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_bank_statement_form_pdcmc" model="ir.ui.view">
+        <field name="name">account.bank.statement.form</field>
+        <field name="model">account.bank.statement</field>
+        <field name="priority">1</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Bank Statement" no_create="True">
+            <header>
+            </header>
+            <sheet>
+                <div class="oe_title oe_inline">
+                    <label for="name"/>
+                    <h1><field name="name" placeholder="e.g. BNK/2021/0001"/></h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="is_valid" invisible="True"/>
+                        <field name="date" attrs="{'readonly': True}" options="{'datepicker': {'warn_future': true}}"/> 
+                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" />
+                        <field name="currency_id" invisible="True"/>
+                    </group>
+                    <group>
+                        <label for="opening_balance"/>
+                        <div>
+                            <field name="opening_balance" class="oe_inline" readonly="1"/>
+                        </div>
+                        <label for="balance_start"/>
+                        <div>
+                            <field name="balance_start" class="oe_inline" readonly="1"/>
+                        </div>
+                        <label for="balance_end_real"/>
+                        <div>
+                            <field name="balance_end_real" class="oe_inline" readonly="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page string="Transactions" name="line_ids">
+                        <field name="line_ids" readonly="1" context="{'default_date': date}">
+                            <tree string="Statement lines"
+                                  editable="bottom"
+                                  decoration-muted="is_reconciled"
+                                  limit="500">
+
+                                <field name="company_id" invisible="True"/>
+                                <field name="is_reconciled" invisible="True"/>
+                                <field name="currency_id" invisible="True"/>
+                                <field name="partner_bank_id" invisible="True"/>
+                                <field name="country_code" invisible="True"/>
+
+                                <field name="sequence" widget="handle"/>
+                                <field name="date" readonly="1"/>
+                                <field name="payment_ref"/>
+                                <field name="partner_id" readonly="1"
+                                       domain="['|', ('parent_id','=', False), ('is_company','=',True)]"/>
+                                <field name="ref" optional="hidden"/>
+                                <field name="narration" string="Notes" optional="hidden"/>
+                                <field name="transaction_type" optional="hidden"/>
+                                <field name="amount_currency" optional="hidden" groups="base.group_multi_currency" readonly="1"/>
+                                <field name="foreign_currency_id" optional="hidden" groups="base.group_multi_currency" readonly="1"/>
+                                <field name="amount" readonly="1"/>
+                                <field name="account_number" optional="hidden"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                    <div class="oe_subtotal_footer_separator oe_inline">
+                        <label for="balance_end" />
+                    </div>
+                    <field name="balance_end" nolabel="1" class="oe_subtotal_footer_separator"/>
+                </group>
+                <div class="oe_clear"/>
+            </sheet>
+            <div class="o_attachment_preview"/>
+            </form>
+        </field>
+    </record>-->
+    
+	<!--
+
+	<record id="view_pos_dual_currency_config_form" model="ir.ui.view">
+		<field name="name">pos.pin.config.form.show_dual_currency</field>
+		<field name="model">res.config.settings</field>
+		<field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='pos_iface_big_scrollbars']/../.." position="after">
+				<div class="col-xs-12 col-md-6 o_setting_box" id="show_prod_qtys">
+					<div class="o_setting_left_pane">
+						<field name="show_dual_currency" />
+					</div>
+					<div class="o_setting_right_pane">
+						<label for="show_dual_currency" />
+						<div class="text-muted">
+							Adds price of other currency at products
+						</div>
+						<div class="content-group mt16 row"  attrs="{'invisible':[('show_dual_currency','=',False)]}">
+							<label for="show_currency" string="Currency"  class="col-lg-3 o_light_label"/>
+							<field name="show_currency"   />
+						</div>
+						<div class="content-group mt16 row"  attrs="{'invisible':[('show_dual_currency','=',False)]}">
+								<label for="show_currency_rate" string="Rate"  class="col-lg-3 o_light_label"/>
+								<field name="show_currency_rate" digits="[12,12]"/>
+							</div>
+					</div>
+                    <div class="o_setting_left_pane" attrs="{'invisible':[('show_dual_currency','=',False)]}">
+						<field name="hide_symbol_currency" />
+					</div>
+					<div class="o_setting_right_pane" attrs="{'invisible':[('show_dual_currency','=',False)]}">
+						<label for="hide_symbol_currency" />
+						<div class="text-muted">
+							Hide symbol currency in POS
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6 o_setting_box" id="assign_cazmop">
+					<div class="o_setting_left_pane">
+						<field name="assign_customer_account_zero_making_order_payments" />
+					</div>
+					<div class="o_setting_right_pane">
+						<label for="assign_customer_account_zero_making_order_payments" />
+					</div>
+				</div>
+                <div class="col-xs-12 col-md-6 o_setting_box" id="assign_cazmop">
+					<div class="o_setting_left_pane">
+						<field name="view_payments_journal_currency" />
+					</div>
+					<div class="o_setting_right_pane">
+						<label for="view_payments_journal_currency" />
+					</div>
+				</div>
+                <div class="col-xs-12 col-md-6 o_setting_box">
+					<div class="o_setting_left_pane">
+						<field name="view_quantity_products" />
+					</div>
+					<div class="o_setting_right_pane">
+						<label for="view_quantity_products" />
+					</div>
+				</div>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="mai_pos_view_pos_order_tree" model="ir.ui.view">
+		<field name="name">mai_pos_view_pos_order_tree</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='amount_total']" position="after">
+				<field name="company_foreign_currency_id" invisible="True"/>
+                <field name="amount_total_foreign" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+                <field name="amount_paid" optional="show" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_paid_foreign" optional="show" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+				<field name="pay_amount_usd" string="Pagos en USD"/>
+				<field name="pay_amount_ves" string="Pagos en VES"/>
+			</xpath>
+            <xpath expr="//field[@name='amount_total']" position="before">
+                <field name="amount_tax" optional="show" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="amount_tax_foreign" optional="show" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+            </xpath>
+		</field>
+	</record>
+
+	<record id="res_currency_alternative_tree" model="ir.ui.view">
+		<field name="name">res_currency_alternative_tree</field>
+		<field name="model">res.currency</field>
+		<field name="inherit_id" ref="base.view_currency_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='inverse_rate']" position="after">
+				<field name="alternative_exchange_rate" digits="[12,6]"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="res_currency_alternative_form" model="ir.ui.view">
+		<field name="name">res_currency_alternative_form</field>
+		<field name="model">res.currency</field>
+		<field name="inherit_id" ref="base.view_currency_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='currency_subunit_label']" position="after">
+				<field name="alternative_exchange_rate" digits="[12,4]"/>
+			</xpath>
+			<xpath expr="//page[@name='rates']" position="after">
+				<page string="Tasas alternativas" name="rate_alternative_rate_page">
+                    <field name="rate_alternative_rate_ids" widget="one2many">
+                        <tree string="Rates" editable="top" limit="25">
+                            <field name="name"/>
+                            <field name="rate" digits="[12,12]"/>
+                        </tree>
+                    </field>
+                </page>
+			</xpath>
+            <xpath expr="//field[@name='active']" position="before">
+				<field name="currency_bottom" widget="boolean_toggle"/>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="customer_statements_form_view_pdc" model="ir.ui.view">
+		<field name="name">customer_statements_form_view_pdc</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="account_followup.customer_statements_form_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='unreconciled_aml_ids']//tree//field[@name='amount_residual_currency']" position="after">
+				<field name="company_foreign_currency_id" invisible="1"/>
+                <field name="amount_residual_foreign_currency" string="Residual Amount" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+			</xpath>
+            <xpath expr="//group[@class='oe_invoice_lines_tab']//field[@name='total_due']" position="after">
+                <field name="company_foreign_currency_id" invisible="1"/>
+                <field name="total_due_foreign_currency" string="Adeudo Total" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+			</xpath>
+            <xpath expr="//group[@class='oe_invoice_lines_tab']//field[@name='total_overdue']" position="after">
+                <field name="company_foreign_currency_id" invisible="1"/>
+                <field name="total_overdue_foreign_currency" string="Total de Vencido" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+			</xpath>
+		</field>
+	</record>
+
+    <record model="ir.ui.view" id="pos_order_line_view_tree">
+        <field name="name">pos_order_line_view_tree</field>
+        <field name="model">pos.order.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" string="Reporte de ventas">
+                <field name="create_date" string="Fecha"/>
+                <field name="fiscal_invoice_number"/>
+                <field name="config_id"/>
+                <field name="employee_id"/>
+                <field name="default_code"/>
+                <field name="product_id"/>
+                <field name="categ_id"/>
+                <field name="qty" sum="Cantidad"/>
+                <field name="price_unit" widget="monetary"/>
+                <field name="price_unit_foreign" widget="monetary"/>
+                <field name="price_subtotal_incl" widget="monetary" string="Precio T VES" sum="Total VES"/>
+                <field name="price_subtotal_incl_foreign" widget="monetary" string="Precio T USD" sum="Total USD"/>
+                <field name="standard_price_currency" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}"/>
+                <field name="standard_price_currency_total" widget="monetary" options="{'currency_field': 'company_foreign_currency_id'}" sum="Costo Total USD"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_foreign_currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pos_order_line_action">
+        <field name="name">Reporte de ventas</field>
+        <field name="res_model">pos.order.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pos_order_line_view_tree"/>
+    </record>
+
+    <menuitem id="menu_pos_account_bank_statement"
+        name="Reporte de ventas"
+        parent="point_of_sale.menu_point_rep"
+        action="pos_dual_currency.pos_order_line_action"
+        sequence="40"/>-->
+
+    <!--<record id="view_partner_form_inherit_pdc" model="ir.ui.view">
+        <field name="name">view_partner_form_inherit_pdc</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="get_total_due_foreign_currency" string="Actualizar Saldo Adeudado $" class="oe_highlight"
+                        type="object"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_form_inherit_pdc_btn" model="ir.ui.view">
+        <field name="name">view_partner_form_inherit_pdc_btn</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_latam_foreing_currency.res_partner_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button//div//span//field[contains(@name, 'total_due_foreign')]" position="replace">
+                <field name="total_due_foreign_currency" readonly="1" widget="monetary" options="{'currency_field': 'foreign_currency_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="customer_statements_form_view_inherit_pdc" model="ir.ui.view">
+        <field name="name">customer_statements_form_view_inherit_pdc</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_latam_foreing_currency.customer_statements_form_view_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[contains(@class, 'oe_invoice_lines_tab')][2]//field[contains(@name, 'total_due_foreign')]" position="replace">
+                <field name="total_due_foreign_currency" string="Adeudado en divisa" style="font-weight: bold; font-size: 1.2em;" readonly="1" widget="monetary" options="{'currency_field': 'foreign_currency_id'}"/>
+            </xpath>
+            <xpath expr="//group[contains(@class, 'oe_invoice_lines_tab')][2]//field[contains(@name, 'total_overdue_foreign')]" position="replace">
+                <field name="total_overdue_foreign_currency" string="Total vencido en divisa" style="font-weight: bold; font-size: 1.2em;" readonly="1" widget="monetary" options="{'currency_field': 'foreign_currency_id'}"/>
+            </xpath>
+        </field>
+    </record>0-->
+</odoo>

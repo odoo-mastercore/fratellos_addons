@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_smart_orderpoint" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.smart_orderpoint</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="100"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Smart Orderpoint" string="Smart Orderpoint" name="smart_orderpoint">
+                    <block title="Proyección y Fechas" name="smart_orderpoint_projection">
+                        <setting id="smart_projection_days_setting" string="Días de Proyección" help="Días a proyectar a partir de hoy">
+                            <field name="smart_projection_days"/>
+                        </setting>
+                        <setting id="smart_history_months_setting" string="Meses Historial (Desde)" help="Meses hacia atrás para cálculo de ventas (0 = desde hoy)">
+                            <field name="smart_history_months"/>
+                        </setting>
+                    </block>
+
+                    <!-- <block title="Diarios inter compañía" name="smart_orderpoint_intercompany">
+                        <setting id="sale_config_company_inter_sale" string="Diario de Ventas" help="Agrega el diario inter compañía de ventas">
+                            <field name="company_inter_sale_id"/>
+                        </setting>
+                        <setting id="sale_config_company_inter_purchase" string="Diario de Compras" help="Agrega el diario inter compañía de compras">
+                            <field name="company_inter_purchase_id"/>
+                        </setting>
+                    </block> -->
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_smart_orderpoint_config_settings" model="ir.actions.act_window">
+        <field name="name">Configuración</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form_smart_orderpoint"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'smart_orderpoint', 'bin_size': False}</field>
+    </record>
+</odoo>

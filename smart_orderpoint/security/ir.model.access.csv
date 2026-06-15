@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_smart_orderpoint_user,access.smart.orderpoint,model_stock_warehouse_orderpoint,base.group_user,1,0,0,0
+access_wh_orderpoint_wizard,access.wh.orderpoint.wizard,model_stock_wh_orderpoint,base.group_user,1,1,1,1
+access_wh_orderpoint_line_wizard,access.wh.orderpoint.line.wizard,model_stock_wh_orderpoint_line,base.group_user,1,1,1,0

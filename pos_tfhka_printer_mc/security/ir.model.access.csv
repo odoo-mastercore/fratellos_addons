@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fiscal_report_z,pos_tfhka_printer_mc.fiscal_report_z,pos_tfhka_printer_mc.model_fiscal_report_z,base.group_user,1,1,1,1
+access_document_printer_tfhka,pos_tfhka_printer_mc.document_printer_tfhka,pos_tfhka_printer_mc.model_document_printer_tfhka,base.group_user,1,1,1,1
+access_document_printer_tfhka_wz,pos_tfhka_printer_mc.document_printer_tfhka_wz,pos_tfhka_printer_mc.model_document_printer_tfhka_wz,base.group_user,1,1,1,1
+access_tfhka_fiscal_info_wizard,pos_tfhka_printer_mc.tfhka_fiscal_info_wizard,pos_tfhka_printer_mc.model_tfhka_fiscal_info_wizard,base.group_user,1,1,1,1

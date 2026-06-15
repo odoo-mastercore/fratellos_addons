@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ClosePosPopupTFHKA" t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[contains(@t-set-slot, 'footer')]//button[contains(@t-on-click, '() => this.cashMove()')]" position="before">
+            <t t-if="pos.config.is_tax_box">
+                <button class="button btn btn-secondary generate-report-fiscal-X" t-att-disabled="!canCancel()" t-on-click="() => this.generateReportFiscalClosing('X')" t-att-class="this.ui.isSmall ? 'w-100' : 'btn-lg'">Reporte X</button>
+                <button class="button btn btn-secondary generate-report-fiscal-Z" t-att-disabled="!canCancel()" t-on-click="() => this.generateReportFiscalClosing('Z')" t-att-class="this.ui.isSmall ? 'w-100' : 'btn-lg'">Reporte Z</button>
+            </t>
+        </xpath>
+    </t>
+
+ </templates>

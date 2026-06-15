@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_details_wizard_pdcmc" model="ir.ui.view">
+        <field name="name">view_pos_details_wizard_pdcmc</field>
+        <field name="model">pos.details.wizard</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_details_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pos_config_ids']" position="before">
+                <group>
+                    <field name="only_payment_details" widget="boolean_toggle" colspan="2"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_session_sales_details_pdcmc" model="ir.ui.view">
+        <field name="name">pos_session_sales_details_pdcmc</field>
+        <field name="model"></field>
+        <field name="inherit_id" ref="point_of_sale.pos_session_sales_details"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@id,'sales')]" position="attributes">
+                <attribute name="t-if">products and only_payment_details == False</attribute>
+            </xpath>
+            <xpath t-if="only_payment_details" expr="//div[contains(@id,'taxe_sales')]/h6" position="attributes">
+                <attribute name="class" add="w-100" remove="w-50" separator=" " />
+            </xpath>
+            <xpath t-if="only_payment_details" expr="//div[contains(@id,'taxe_sales')]/table" position="attributes">
+                <attribute name="class" add="w-100" remove="w-50" separator=" " />
+            </xpath>
+            <xpath expr="//div[contains(@id,'refunds')]" position="attributes">
+                <attribute name="t-if">refund_products and only_payment_details == False</attribute>
+            </xpath>
+            <xpath t-if="only_payment_details" expr="//div[contains(@id,'taxe_refunds')]/h6" position="attributes">
+                <attribute name="class" add="w-100" remove="w-50" separator=" " />
+            </xpath>
+            <xpath t-if="only_payment_details" expr="//div[contains(@id,'taxe_refunds')]/table" position="attributes">
+                <attribute name="class" add="w-100" remove="w-50" separator=" " />
+            </xpath>
+            <xpath expr="//div[contains(@id,'discounts')]" position="attributes">
+                <attribute name="t-if">only_payment_details == False</attribute>
+            </xpath>
+            <xpath expr="//div[contains(@id,'invoices')]" position="attributes">
+                <attribute name="t-if">invoiceTotal and only_payment_details == False</attribute>
+            </xpath>
+            <xpath t-if="only_payment_details" expr="//div[contains(@id,'payments')]/t/h6" position="attributes">
+                <attribute name="class" add="w-100" remove="w-50" separator=" " />
+            </xpath>
+            <xpath t-if="only_payment_details" expr="//div[contains(@id,'payments')]/t/table" position="attributes">
+                <attribute name="class" add="w-100" remove="w-50" separator=" " />
+            </xpath>
+        </field>
+    </record>
+</odoo>

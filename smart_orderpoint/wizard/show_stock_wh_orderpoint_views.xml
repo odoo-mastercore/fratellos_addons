@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_show_stock_wh_orderpoint_form" model="ir.ui.view">
+        <field name="name">view.stock.wh.orderpoint.form</field>
+        <field name="model">stock.wh.orderpoint</field>
+        <field name="arch" type="xml">
+            <form string="Reglas de Abastecimiento">
+                <sheet>
+                    <notebook>
+                        
+                        <page name="stock_wh_orderpoint_ids" string="Reglas de Abastecimientos">
+                            <field name="stock_wh_orderpoint_ids">
+                                <tree editable="top" string="Reglas de Abastecimientos" options="{'no_create':True}">   
+                                    <field name="product_id" />
+                                    <field name="company_id" />
+                                    <field name="location_id" />
+                                    <field name="qty_on_hand" />
+                                    <field name="action" />
+                                    <field name="quantity" />
+                                </tree>  
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="product_id" />
+                                            <field name="company_id" />
+                                            <field name="location_id" />
+                                            <field name="qty_on_hand" />
+                                        </group>
+                                        <group>
+                                            <field name="action" />
+                                            <field name="quantity" />
+                                        </group>
+                                    </group>  
+                                </form>         
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Generar" name="action_generate" type="object" class="btn-primary" />
+                    <button string="Cerrar" class="oe_highlight" special="cancel"/>
+                </footer>
+                <script> $(document).ready(function(){ $(".o_field_x2many_list_row_add").hide(); }); </script>
+            </form>
+        </field>
+    </record>
+    
+</odoo>

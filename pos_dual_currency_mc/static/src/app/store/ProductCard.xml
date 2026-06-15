@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ProductCardPDCMC" t-inherit="point_of_sale.ProductCard" t-inherit-mode="extension" owl="1">
+        <xpath expr="//article//div[contains(@class, 'overflow-hidden lh-sm product-name my-2')]" position="replace">
+           <div class="overflow-hidden lh-sm product-name my-2" t-att-class="{'no-image d-flex justify-content-center align-items-center text-center fs-4': !props.imageUrl}" t-attf-id="article_product_{{props.productId}}">
+               <div class="d-flex flex-column">
+                   <div class="p-0 bd-highlight"><span t-esc="props.name"/></div>
+                   <div class="text-start p-0 bd-highlight"><span t-esc="this.productPrice()"/></div>
+                   <div class="text-start p-0 bd-highlight"><span t-esc="this.productPriceForeign()"/></div>
+               </div>
+           </div>
+        </xpath>
+    </t>
+
+ </templates>
